@@ -1,0 +1,29 @@
+require "csv"
+require "mechanize"
+require "uri"
+require "open-uri"
+
+links = []
+
+CSV.foreach("linkCheck.csv") do |csv|
+	agent = Mechanize.new 
+	fixed = csv.to_s.tr("[]", "").strip
+	screwed_up = []
+	 
+
+	sites = "http://#{csv.to_s.tr('[]+"', '').strip}"
+	 	begin
+	 	check_links = agent.get("#{sites}")
+		rescue 	StandardError=>e 
+			response ="#{e}" 
+			store = []
+			store << response.slice(response.index("http:")...-1) 
+			puts store
+		else 
+			puts check_links.code
+		end 	
+	
+
+
+
+end 
